@@ -8,3 +8,7 @@ services:
       - 27020:27017
     volumes:
       - ./test_data/sample_collection.bson:/data/sample_collection.bson
+      - mongodb:/data/db
+
+volumes:
+  mongodb:
