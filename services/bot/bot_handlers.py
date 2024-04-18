@@ -22,7 +22,7 @@ async def send_salary_aggregation_data(
     try:
         data_handler = TelegramDataHandler(update.message.text, mongo_service)
     except ValueError as exc:
-        response = repr(exc)
+        response = exc.args[0]
     else:
         response = str(await data_handler.serialize_response())
 

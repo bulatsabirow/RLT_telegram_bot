@@ -1,11 +1,13 @@
 import asyncio
 import datetime
 import json
+from dataclasses import asdict
 from pprint import pprint
 
 
 from db import collection
 from db.mongo import MongoDBService
+from schema import TelegramMessage
 
 
 class TelegramDataHandler:
@@ -25,8 +27,8 @@ class TelegramDataHandler:
     @data.setter
     def data(self, value):
         try:
-            self._data = json.loads(value)
-        except json.decoder.JSONDecodeError:
+            self._data = TelegramMessage(**json.loads(value))
+        except (json.decoder.JSONDecodeError, TypeError):
             raise ValueError(
                 'Невалидный запрос. Пример запроса: \
 {"dt_from": "2022-09-01T00:00:00", "dt_upto": "2022-12-31T23:59:00", "group_type": "month"}'
@@ -37,11 +39,7 @@ class TelegramDataHandler:
         return self._db_service
 
     async def serialize_response(self):
-        raw_data = await self.db_service.fetch_aggregated_data(
-            datetime.datetime.fromisoformat(self.data["dt_from"]),
-            datetime.datetime.fromisoformat(self.data["dt_upto"]),
-            self.data["group_type"],
-        )
+        raw_data = await self.db_service.fetch_aggregated_data(**asdict(self.data))
         dataset = []
         labels = []
 
