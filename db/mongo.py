@@ -52,9 +52,6 @@ class MongoDBService:
             {"$group": {"_id": "$temp", "total": {"$sum": "$value"}}},
             {"$sort": {"_id": 1}},
         ]
-        return [
-            res
-            async for res in self.collection.aggregate(
-                aggregate="sample_collection", pipeline=pipeline
-            )
-        ]
+        return await self.collection.aggregate(
+            aggregate="sample_collection", pipeline=pipeline
+        ).to_list(None)

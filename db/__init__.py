@@ -1,4 +1,4 @@
-import motor
+import motor.motor_asyncio
 
 from config import MONGO_URI, MONGO_DB
 
