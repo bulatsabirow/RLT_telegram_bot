@@ -23,7 +23,7 @@ class MongoDBService:
         # According to MongoDB documentation, upper bound is exclusive,
         # so this bound need to be incremented (+1 hour or +1 day or +1 month)
         lower_bound, upper_bound = dt_from, dt_upto + relativedelta.relativedelta(
-            **{group_type: 1}
+            **{f"{group_type}s": 1}
         )
         pipeline = [
             {
