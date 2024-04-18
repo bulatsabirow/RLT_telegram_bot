@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - 27020:27017
+    volumes:
+      - ./test_data/sample_collection.bson:/data/sample_collection.bson
